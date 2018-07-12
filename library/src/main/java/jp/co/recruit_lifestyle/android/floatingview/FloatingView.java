@@ -103,7 +103,7 @@ class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreDrawList
     /**
      * Current velocity units
      */
-    private static final int CURRENT_VELOCITY_UNITS = 1000;
+    private static final int CURRENT_VELOCITY_UNITS = 2000;
 
     /**
      * 通常状態
@@ -136,17 +136,17 @@ class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreDrawList
     /**
      * Constant for scaling down X coordinate velocity
      */
-    private static final float MAX_X_VELOCITY_SCALE_DOWN_VALUE = 9;
+    private static final float MAX_X_VELOCITY_SCALE_DOWN_VALUE = 6;
 
     /**
      * Constant for scaling down Y coordinate velocity
      */
-    private static final float MAX_Y_VELOCITY_SCALE_DOWN_VALUE = 8;
+    private static final float MAX_Y_VELOCITY_SCALE_DOWN_VALUE = 5;
 
     /**
      * Constant for calculating the threshold to move when throwing
      */
-    private static final float THROW_THRESHOLD_SCALE_DOWN_VALUE = 9;
+    private static final float THROW_THRESHOLD_SCALE_DOWN_VALUE = 7;
 
     /**
      * デフォルトのX座標を表す値
@@ -1015,8 +1015,8 @@ class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreDrawList
     private void startSpringAnimationY(int currentY, float velocityY) {
         // Create SpringForce
         final SpringForce springY = new SpringForce(currentY < mMetrics.heightPixels / 2 ? mPositionLimitRect.top : mPositionLimitRect.bottom);
-        springY.setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY);
-        springY.setStiffness(SpringForce.STIFFNESS_LOW);
+        springY.setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
+        springY.setStiffness(SpringForce.STIFFNESS_MEDIUM);
 
         // Create SpringAnimation
         final SpringAnimation springAnimationY = new SpringAnimation(new FloatValueHolder());
@@ -1101,7 +1101,7 @@ class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreDrawList
     /**
      * Check if it is attached to the Window and call WindowManager.updateLayout()
      */
-    private void updateViewLayout() {
+    public void updateViewLayout() {
         if (!ViewCompat.isAttachedToWindow(this)) {
             return;
         }

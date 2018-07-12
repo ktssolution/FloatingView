@@ -63,9 +63,7 @@ public class ChatHeadService extends Service implements FloatingViewListener {
         mFloatingViewManager = new FloatingViewManager(this, this);
         mFloatingViewManager.setFixedTrashIconImage(R.drawable.ic_trash_fixed);
         mFloatingViewManager.setActionTrashIconImage(R.drawable.ic_trash_action);
-        final FloatingViewManager.Options options = new FloatingViewManager.Options();
-        options.overMargin = (int) (16 * metrics.density);
-        mFloatingViewManager.addViewToWindow(iconView, options);
+        mFloatingViewManager.addViewToWindow(iconView);
 
         // 常駐起動
         startForeground(NOTIFICATION_ID, createNotification(this));

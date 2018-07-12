@@ -76,14 +76,15 @@ public class CustomFloatingViewService extends Service implements FloatingViewLi
             }
         });
 
-        mFloatingViewManager = new FloatingViewManager(this, this);
+        final FloatingViewManager.Options options = loadOptions(metrics);
+
+        mFloatingViewManager = new FloatingViewManager(this, this, options);
         mFloatingViewManager.setFixedTrashIconImage(R.drawable.ic_trash_fixed);
         mFloatingViewManager.setActionTrashIconImage(R.drawable.ic_trash_action);
         // Setting Options(you can change options at any time)
         loadDynamicOptions();
         // Initial Setting Options (you can't change options after created.)
-        final FloatingViewManager.Options options = loadOptions(metrics);
-        mFloatingViewManager.addViewToWindow(iconView, options);
+        mFloatingViewManager.addViewToWindow(iconView);
 
         // 常駐起動
         startForeground(NOTIFICATION_ID, createNotification(this));
@@ -189,6 +190,7 @@ public class CustomFloatingViewService extends Service implements FloatingViewLi
         final FloatingViewManager.Options options = new FloatingViewManager.Options();
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
+        options.removeTrashView = true;
         // Shape
         final String shapeSettings = sharedPref.getString("settings_shape", "");
         if ("Circle".equals(shapeSettings)) {

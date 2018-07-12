@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -64,7 +65,7 @@ class FullscreenObserverView extends View implements ViewTreeObserver.OnGlobalLa
 
     static {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
-            OVERLAY_TYPE = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+            OVERLAY_TYPE = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE;
         } else {
             OVERLAY_TYPE = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         }
@@ -73,9 +74,8 @@ class FullscreenObserverView extends View implements ViewTreeObserver.OnGlobalLa
     /**
      * コンストラクタ
      */
-    FullscreenObserverView(Context context, ScreenChangedListener listener) {
+    FullscreenObserverView(Context context, ScreenChangedListener listener, boolean avoidKeyBoard) {
         super(context);
-
         // リスナーのセット
         mScreenChangedListener = listener;
 
@@ -84,10 +84,19 @@ class FullscreenObserverView extends View implements ViewTreeObserver.OnGlobalLa
         mParams.width = 1;
         mParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
         mParams.type = OVERLAY_TYPE;
-        mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        if(avoidKeyBoard){
+            mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
+                    WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM |
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        } else {
+            mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        }
+
         mParams.format = PixelFormat.TRANSLUCENT;
+        mParams.gravity = Gravity.LEFT | Gravity.TOP;
 
         mWindowRect = new Rect();
         mLastUiVisibility = NO_LAST_VISIBILITY;
