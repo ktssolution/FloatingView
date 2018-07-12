@@ -28,6 +28,7 @@ import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -204,7 +205,7 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
         mTrashViewRect = new Rect();
         mIsMoveAccept = false;
         mDisplayMode = DISPLAY_MODE_HIDE_FULLSCREEN;
-
+        gestureDetector = new GestureDetector(mContext, new GestureListener());
         // FloatingViewと連携するViewの構築
         mFloatingViewList = new ArrayList<>();
         mFullscreenObserverView = new FullscreenObserverView(context, this, options.avoidKeyBoard);
@@ -348,6 +349,8 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
      */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        mFloatingViewListener.onTouch(event);
+        gestureDetector.onTouchEvent(event);
         final int action = event.getAction();
 
         // 押下状態でないのに移動許可が出ていない場合はなにもしない(回転直後にACTION_MOVEが来て、FloatingViewが消えてしまう現象に対応)
@@ -653,6 +656,43 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
             avoidKeyBoard = false;
         }
 
+    }
+
+    private final GestureDetector gestureDetector;
+    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            mFloatingViewListener.onClick();
+            return super.onSingleTapConfirmed(e);
+        }
+
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return super.onSingleTapUp(e);
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            mFloatingViewListener.onDoubleClick();
+            return super.onDoubleTap(e);
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            mFloatingViewListener.onLongClick();
+            super.onLongPress(e);
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
     }
 
 }

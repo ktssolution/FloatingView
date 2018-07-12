@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -107,6 +108,30 @@ public class ChatHeadService extends Service implements FloatingViewListener {
         } else {
             Log.d(TAG, getString(R.string.touch_finished_position, x, y));
         }
+    }
+
+    @Override
+    public void onClick() {
+        Log.d(TAG, "onClick");
+
+    }
+
+    @Override
+    public void onLongClick() {
+        Log.d(TAG, "onLongClick");
+
+    }
+
+    @Override
+    public void onDoubleClick() {
+        Log.d(TAG, "onDoubleClick");
+
+    }
+
+    @Override
+    public void onTouch(MotionEvent e) {
+        Log.d(TAG, "onTouch");
+
     }
 
     /**

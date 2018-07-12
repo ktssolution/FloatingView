@@ -13,7 +13,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import jp.co.recruit_lifestyle.sample.DeleteActionActivity;
  * サンプルとしてクリック時にはメールアプリを起動します。
  */
 public class CustomFloatingViewService extends Service implements FloatingViewListener {
+    private static final String TAG = "CustomFloating";
 
     /**
      * 通知ID
@@ -130,6 +133,30 @@ public class CustomFloatingViewService extends Service implements FloatingViewLi
             editor.putInt(PREF_KEY_LAST_POSITION_Y, y);
             editor.apply();
         }
+    }
+
+    @Override
+    public void onClick() {
+        Log.d(TAG, "onClick");
+
+    }
+
+    @Override
+    public void onLongClick() {
+        Log.d(TAG, "onLongClick");
+
+    }
+
+    @Override
+    public void onDoubleClick() {
+        Log.d(TAG, "onDoubleClick");
+
+    }
+
+    @Override
+    public void onTouch(MotionEvent e) {
+        Log.d(TAG, "onTouch");
+
     }
 
     /**

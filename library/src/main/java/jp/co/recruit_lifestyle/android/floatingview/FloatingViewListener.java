@@ -17,6 +17,8 @@
 package jp.co.recruit_lifestyle.android.floatingview;
 
 
+import android.view.MotionEvent;
+
 /**
  * FloatingViewのリスナです。
  */
@@ -36,4 +38,8 @@ public interface FloatingViewListener {
      */
     void onTouchFinished(boolean isFinishing, int x, int y);
 
+    void onClick();
+    void onLongClick();
+    void onDoubleClick();
+    void onTouch(MotionEvent e);
 }
