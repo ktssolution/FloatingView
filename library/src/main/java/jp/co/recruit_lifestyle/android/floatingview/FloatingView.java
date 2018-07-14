@@ -531,7 +531,11 @@ class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreDrawList
         if (mMoveDirection == FloatingViewManager.MOVE_DIRECTION_NONE) {
             moveTo(mInitX, mInitY, mInitX, mInitY, false);
         } else {
-            mIsInitialAnimationRunning = true;
+            if(mAnimateInitialMove) {
+                mIsInitialAnimationRunning = true;
+            } else {
+                mIsInitialAnimationRunning = false;
+            }
             // 初期位置から画面端に移動
             moveToEdge(mInitX, mInitY, mAnimateInitialMove);
         }
