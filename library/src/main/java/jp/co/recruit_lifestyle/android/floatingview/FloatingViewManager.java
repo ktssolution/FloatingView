@@ -179,6 +179,10 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
     @DisplayMode
     private int mDisplayMode;
 
+    public ArrayList<FloatingView> getmFloatingViewList() {
+        return mFloatingViewList;
+    }
+
     /**
      * Windowに貼り付けられたFloatingViewのリスト
      * TODO:第2弾のFloatingViewの複数表示で意味を発揮する予定

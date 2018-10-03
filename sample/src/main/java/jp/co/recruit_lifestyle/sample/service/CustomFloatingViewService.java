@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import jp.co.recruit.floatingview.R;
+import jp.co.recruit_lifestyle.android.floatingview.FloatingView;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewManager;
 import jp.co.recruit_lifestyle.sample.DeleteActionActivity;
@@ -71,11 +73,16 @@ public class CustomFloatingViewService extends Service implements FloatingViewLi
             @Override
             public void onClick(View v) {
                 // メールアプリの起動
-                final Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.mail_address), null));
-                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_title));
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_content));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                mFloatingViewManager.setDisplayMode(FloatingViewManager.DISPLAY_MODE_HIDE_ALWAYS);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFloatingViewManager.setDisplayMode(FloatingViewManager.DISPLAY_MODE_HIDE_FULLSCREEN);
+
+//                        iconView.setVisibility(View.VISIBLE);
+
+                    }
+                }, 2000);
             }
         });
 
@@ -89,6 +96,16 @@ public class CustomFloatingViewService extends Service implements FloatingViewLi
         // Initial Setting Options (you can't change options after created.)
         mFloatingViewManager.addViewToWindow(iconView);
 
+
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                FloatingView floatingView = mFloatingViewManager.getmFloatingViewList().get(0);
+//                floatingView.moveTo(floatingView.getmParams().x, floatingView.getmParams().y, 100, 100, false);
+//
+//            }
+//        }, 2000);
         // 常駐起動
         startForeground(NOTIFICATION_ID, createNotification(this));
 

@@ -2,7 +2,6 @@
     <string name="app_name">FloatingView Sample</string>
     <string name="chathead_content_title">デモ チャット：アクティブ</string>
     <string name="content_text">デモ実行中</string>
-    <string name="mail_content_title">デモ カスタマイズ：アクティブ</string>
     <string name="chathead_click_message">クリック!</string>
     <string name="delete_demo">デモ表示を削除</string>
     <string name="show_demo">デモ表示</string>
