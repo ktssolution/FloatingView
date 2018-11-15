@@ -7,4 +7,21 @@
 		<attr name="subActionButtonRadius" format="integer"/>
 		<attr name="anchored" format="boolean"/>
 	</declare-styleable>
+
+	<attr name="fromDegrees" format="float|reference" />
+	<attr name="toDegrees" format="float|reference" />
+	<attr name="childSize" format="dimension|reference" />
+
+	<declare-styleable name="ArcLayout">
+		<attr name="fromDegrees"/>
+		<attr name="toDegrees"/>
+		<attr name="childSize"/>
+	</declare-styleable>
+
+	<declare-styleable name="ArcMenu">
+		<attr name="fromDegrees"/>
+		<attr name="toDegrees"/>
+		<attr name="childSize"/>
+	</declare-styleable>
+
 </resources>

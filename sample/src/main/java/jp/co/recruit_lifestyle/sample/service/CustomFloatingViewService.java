@@ -12,6 +12,8 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -25,6 +27,9 @@ import jp.co.recruit.floatingview.R;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingView;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewManager;
+import jp.co.recruit_lifestyle.android.floatingview.animation.enumerators.AnimationType;
+import jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.FloatingMenuButton;
+import jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.MovementStyle;
 import jp.co.recruit_lifestyle.sample.DeleteActionActivity;
 
 /**

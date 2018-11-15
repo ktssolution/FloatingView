@@ -151,7 +151,7 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     // Overridden Methods
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        try {
+//        try {
             // Return the alpha to normal
             restoreTransparency(this);
 
@@ -252,9 +252,9 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
                     break;
                 }
             }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
         invalidate();
         return true;
     }
@@ -409,26 +409,26 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
     }
 
     private void addViewToCurrentContainer(View view, WindowManager.LayoutParams layoutParams) {
-        try {
+//        try {
             if (layoutParams != null) {
-                ViewGroup vg = (ViewGroup) Utils.getWindowManager(context);
+                ViewGroup vg = (ViewGroup) this.getParent();
                 removeViewFromCurrentContainer(view);
                 if (vg != null) {
                     vg.addView(view, layoutParams);
                 }
             } else {
-                ViewGroup vg = (ViewGroup) Utils.getWindowManager(context);
+                ViewGroup vg = (ViewGroup) this.getParent();
                 if (vg != null) {
                     vg.addView(view);
                 }
             }
-        } catch (ClassCastException e) {
-            Log.e(FloatingMenuButton.class.getName(), e.getMessage());
-        }
+//        } catch (ClassCastException e) {
+//            Log.e(FloatingMenuButton.class.getName(), e.getMessage());
+//        }
     }
 
     public void removeViewFromCurrentContainer(View view) {
-        ViewGroup vg = ((ViewGroup) Utils.getActivityContentView(context));
+        ViewGroup vg = ((ViewGroup) this.getParent());
         if (vg != null) {
             vg.removeView(view);
         }
@@ -449,13 +449,13 @@ public class FloatingMenuButton extends FrameLayout implements View.OnTouchListe
         getLocationOnScreen(coordinates);
         // We then need to deduce the offsets
         Rect activityFrame = new Rect();
-        View v = Utils.getActivityContentView(context);
+        View v = (View) this.getParent();
         if (v != null) {
             v.getWindowVisibleDisplayFrame(activityFrame);
             coordinates[0] -= (Utils.getScreenSize(context).x - v.getMeasuredWidth());
             coordinates[1] -= (activityFrame.height() + activityFrame.top - v.getMeasuredHeight());
         }
-        return new Point(coordinates[0], coordinates[1]);
+        return new Point(200, 200);
     }
 
     private Point calculateItemPositions(Integer startAngle, Integer endAngle) {

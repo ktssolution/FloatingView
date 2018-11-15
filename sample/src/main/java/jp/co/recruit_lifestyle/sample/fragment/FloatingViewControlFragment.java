@@ -11,11 +11,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import jp.co.recruit.floatingview.R;
+import jp.co.recruit_lifestyle.sample.PathMenu;
 import jp.co.recruit_lifestyle.sample.service.ChatHeadService;
 import jp.co.recruit_lifestyle.sample.service.CustomFloatingViewService;
 
@@ -85,7 +88,31 @@ public class FloatingViewControlFragment extends Fragment {
                 ft.commit();
             }
         });
+//        FloatingMenuButton fab_1 = rootView.findViewById(R.id.fab_1);
+//        fab_1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.v(getClass().getSimpleName(), "click");
+//            }
+//        });
+//        fab_1.setStartAngle(0)
+//                .setEndAngle(360)
+//                .setRadius(200)
+//                .setAnimationType(AnimationType.EXPAND)
+//                .setMovementStyle(MovementStyle.STICKED_TO_SIDES);
+//
+//        fab_1.getAnimationHandler()
+//                .setOpeningAnimationDuration(500)
+//                .setClosingAnimationDuration(200)
+//                .setLagBetweenItems(0)
+//                .setOpeningInterpolator(new FastOutSlowInInterpolator())
+//                .setClosingInterpolator(new FastOutLinearInInterpolator())
+//                .shouldFade(true)
+//                .shouldScale(true)
+//                .shouldRotate(false);
 
+        PathMenu pathMenu = new PathMenu(getActivity().getApplicationContext());
+        pathMenu.setVisibility(View.VISIBLE);
         return rootView;
     }
 

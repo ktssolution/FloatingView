@@ -1,44 +1,21 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:floatingMenuActionButton="http://schemas.android.com/tools"
+    android:id="@+id/pai"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:floatingMenuActionButton="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <Button
-        android:id="@+id/show_demo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_demo"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <Button
-        android:id="@+id/show_customized_demo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_customized_demo"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <Button
-        android:id="@+id/show_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_settings"/>
-
-    <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.FloatingMenuButton android:id="@+id/fab_1"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="104dp"
-        android:scaleType="centerInside"
-        floatingMenuActionButton:dispositionEndAngle="360"
-        floatingMenuActionButton:dispositionStartAngle="0"
-        floatingMenuActionButton:subActionButtonRadius="100">
+    android:layout_gravity="center_vertical"
+    android:background="#22222A">
+<jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.FloatingMenuButton android:id="@+id/fab_1"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_marginTop="104dp"
+    android:scaleType="centerInside"
+    floatingMenuActionButton:dispositionEndAngle="360"
+    floatingMenuActionButton:dispositionStartAngle="0"
+    floatingMenuActionButton:subActionButtonRadius="100">
 
         <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.subbutton.FloatingSubButton
             android:id="@+id/fab_2_sub_fab_left_1"
