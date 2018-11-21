@@ -16,6 +16,8 @@
 
 package jp.co.recruit_lifestyle.android.floatingview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -852,6 +854,30 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
         mOnTouchListener = listener;
     }
 
+    private boolean objectAnimation;
+    private boolean physicsAnimationX;
+    private boolean physicsAnimationY;
+    private FinishListener finishListener;
+    public interface FinishListener{
+        void finished();
+    }
+    public void setOnFinishListener(FinishListener finishListener){
+        this.finishListener =  finishListener;
+    }
+
+    public synchronized  void finishAnimation(){
+        if(!objectAnimation && !physicsAnimationX && !physicsAnimationY) {
+            if (finishListener != null) {
+                finishListener.finished();
+            }
+        }
+    }
+    public int getViewParentWidth() {
+        return mMetrics.widthPixels - mNavigationBarHorizontalOffset;
+    }
+    public int getViewParentHeight() {
+        return mMetrics.heightPixels - mStatusBarHeight - mNavigationBarHorizontalOffset;
+    }
     /**
      * 左右の端に移動します。
      *
@@ -888,6 +914,9 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
      * @param withAnimation アニメーションを行う場合はtrue.行わない場合はfalse
      */
     public void moveTo(int currentX, int currentY, int goalPositionX, int goalPositionY, boolean withAnimation) {
+        objectAnimation = false;
+        physicsAnimationX = false;
+        physicsAnimationY = false;
         // 画面端からはみ出さないように調整
         goalPositionX = Math.min(Math.max(mPositionLimitRect.left, goalPositionX), mPositionLimitRect.right);
         goalPositionY = Math.min(Math.max(mPositionLimitRect.top, goalPositionY), mPositionLimitRect.bottom);
@@ -896,8 +925,11 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
             // Use physics animation
             final boolean usePhysicsAnimation = mUsePhysics && mVelocityTracker != null && mMoveDirection != FloatingViewManager.MOVE_DIRECTION_NEAREST;
             if (usePhysicsAnimation) {
+                physicsAnimationX =  true;
+                physicsAnimationY = true;
                 startPhysicsAnimation(goalPositionX, currentY);
             } else {
+                objectAnimation = false;
                 startObjectAnimation(currentX, currentY, goalPositionX, goalPositionY);
             }
         } else {
@@ -906,6 +938,9 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                 mParams.x = goalPositionX;
                 mParams.y = goalPositionY;
                 updateViewLayout();
+                if(finishListener!=null){
+                    finishListener.finished();
+                }
             }
         }
         // タッチ座標を初期化
@@ -963,6 +998,14 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                     updateInitAnimation(animation);
                 }
             });
+            mMoveEdgeAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    objectAnimation = false;
+                    finishAnimation();
+                }
+            });
         } else {
             // To move only x coord (to left or right)
             mParams.y = goalPositionY;
@@ -973,6 +1016,14 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                     mParams.x = (Integer) animation.getAnimatedValue();
                     updateViewLayout();
                     updateInitAnimation(animation);
+                }
+            });
+            mMoveEdgeAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    objectAnimation = false;
+                    finishAnimation();
                 }
             });
         }
@@ -1011,6 +1062,13 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                 updateViewLayout();
             }
         });
+        springAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                physicsAnimationX = false;
+                finishAnimation();
+            }
+        });
         springAnimationX.start();
     }
 
@@ -1045,6 +1103,13 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                 updateViewLayout();
             }
         });
+        springAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                physicsAnimationY = false;
+                finishAnimation();
+            }
+        });
         springAnimationY.start();
     }
 
@@ -1071,7 +1136,15 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                 }
                 // update y coordinate
                 mParams.x = x;
+
                 updateViewLayout();
+            }
+        });
+        flingAnimationX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                physicsAnimationX = false;
+                finishAnimation();
             }
         });
         flingAnimationX.start();
@@ -1101,6 +1174,13 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                 // update y coordinate
                 mParams.y = y;
                 updateViewLayout();
+            }
+        });
+        flingAnimationY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
+                physicsAnimationY = false;
+                finishAnimation();
             }
         });
         flingAnimationY.start();
@@ -1468,7 +1548,7 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
             mState = STATE_NORMAL;
         }
 
-        /**
+        /**zz
          * アニメーションの処理を行います。
          */
         @Override

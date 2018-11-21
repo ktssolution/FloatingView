@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:floatingMenuActionButton="http://schemas.android.com/apk/res-auto"
@@ -31,44 +31,5 @@
         android:layout_height="wrap_content"
         android:text="@string/show_settings"/>
 
-    <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.FloatingMenuButton android:id="@+id/fab_1"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="104dp"
-        android:scaleType="centerInside"
-        floatingMenuActionButton:dispositionEndAngle="360"
-        floatingMenuActionButton:dispositionStartAngle="0"
-        floatingMenuActionButton:subActionButtonRadius="100">
 
-        <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.subbutton.FloatingSubButton
-            android:id="@+id/fab_2_sub_fab_left_1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_sample" />
-
-        <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.subbutton.FloatingSubButton
-            android:id="@+id/fab_2_sub_fab_left_2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_sample" />
-
-        <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.subbutton.FloatingSubButton
-            android:id="@+id/fab_2_sub_fab_left_3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_sample" />
-
-        <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.subbutton.FloatingSubButton
-            android:id="@+id/fab_2_sub_fab_left_4"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_sample" />
-
-        <jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.subbutton.FloatingSubButton
-            android:id="@+id/fab_2_sub_fab_left_5"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_sample" />
-
-    </jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.FloatingMenuButton>
-</FrameLayout>
+</LinearLayout>

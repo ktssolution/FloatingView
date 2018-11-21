@@ -1,4 +1,4 @@
-package jp.co.recruit_lifestyle.sample;
+package jp.co.recruit_lifestyle.android.floatingview;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;

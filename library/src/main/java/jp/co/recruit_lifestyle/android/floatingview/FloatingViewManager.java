@@ -533,6 +533,16 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
         if (isFirstAttach) {
             mWindowManager.addView(mFullscreenObserverView, mFullscreenObserverView.getWindowLayoutParams());
             mTargetFloatingView = floatingView;
+            mTargetFloatingView.setOnFinishListener(new FloatingView.FinishListener() {
+                @Override
+                public void finished() {
+                    final WindowManager.LayoutParams params = mTargetFloatingView.getWindowLayoutParams();
+
+                    if(mFloatingViewListener!=null){
+                        mFloatingViewListener.onFinished(mTargetFloatingView, params.x, params.y);
+                    }
+                }
+            });
         } else {
             mWindowManager.removeViewImmediate(mTrashView);
         }

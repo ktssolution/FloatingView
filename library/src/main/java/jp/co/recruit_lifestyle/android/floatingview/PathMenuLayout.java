@@ -1,11 +1,10 @@
-package jp.co.recruit_lifestyle.sample;
+package jp.co.recruit_lifestyle.android.floatingview;
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -29,52 +28,66 @@ public class PathMenuLayout extends ViewGroup {
     public static final float DEFAULT_TO_DEGREES = 360.0f;
     private float mFromDegrees = DEFAULT_FROM_DEGREES;
     private float mToDegrees = DEFAULT_TO_DEGREES;
-    private static final int MIN_RADIUS = 100;
+    public static final int MIN_RADIUS = 200;
     private int mRadius;// 中心菜单圆点到子菜单中心的距离
     private boolean mExpanded = false;
+    private boolean rotateAnime = false;
 
-    private int position = PathMenu.LEFT_TOP;
-    private int centerX = 0;
-    private int centerY = 0;
+    public static final int LEFT_TOP = 1;
+    public static final int CENTER_TOP = 2;
+    public static final int RIGHT_TOP = 3;
+    public static final int LEFT_CENTER = 4;
+    public static final int CENTER = 5;
+    public static final int RIGHT_CENTER = 6;
+    public static final int LEFT_BOTTOM = 7;
+    public static final int CENTER_BOTTOM = 8;
+    public static final int RIGHT_BOTTOM = 9;
+    private int position = LEFT_TOP;
+    public int centerX = 0;
+    public int centerY = 0;
+    private ListenAnimationEnd listenAnimationEnd;
 
     public void computeCenterXY(int position) {
+        computeCenterXY(position, getWidth(), getHeight());
+    }
+    public void computeCenterXY(int position, int width, int height) {
         switch (position) {
-            case PathMenu.LEFT_TOP://左上
-                centerX = getWidth() / 2 - getRadiusAndPadding();
-                centerY = getHeight() / 2 - getRadiusAndPadding();
+            case LEFT_TOP://左上
+                centerX = width / 2 - getRadiusAndPadding();
+                centerY = height / 2 - getRadiusAndPadding();
                 break;
-            case PathMenu.LEFT_CENTER://左中
-                centerX = getWidth() / 2 - getRadiusAndPadding();
-                centerY = getHeight() / 2;
+            case LEFT_CENTER://左中
+                centerX = width / 2 - getRadiusAndPadding();
+                centerY = height / 2;
                 break;
-            case PathMenu.LEFT_BOTTOM://左下
-                centerX = getWidth() / 2 - getRadiusAndPadding();
-                centerY = getHeight() / 2 + getRadiusAndPadding();
+            case LEFT_BOTTOM://左下
+                centerX = width / 2 - getRadiusAndPadding();
+                centerY = height / 2 + getRadiusAndPadding();
                 break;
-            case PathMenu.CENTER_TOP://上中
-                centerX = getWidth() / 2;
-                centerY = getHeight() / 2 - getRadiusAndPadding();
+            case CENTER_TOP://上中
+                centerX = width / 2;
+                centerY = height / 2 - getRadiusAndPadding();
                 break;
-            case PathMenu.CENTER_BOTTOM://下中
-                centerX = getWidth() / 2;
-                centerY = getHeight() / 2 + getRadiusAndPadding();
+            case CENTER_BOTTOM://下中
+                centerX = width / 2;
+                centerY = height / 2 + getRadiusAndPadding();
                 break;
-            case PathMenu.RIGHT_TOP://右上
-                centerX = getWidth() / 2 + getRadiusAndPadding();
-                centerY = getHeight() / 2 - getRadiusAndPadding();
+            case RIGHT_TOP://右上
+                centerX = width / 2 + getRadiusAndPadding();
+                centerY = height / 2 - getRadiusAndPadding();
                 break;
-            case PathMenu.RIGHT_CENTER://右中
-                centerX = getWidth() / 2 + getRadiusAndPadding();
-                centerY = getHeight() / 2;
+            case RIGHT_CENTER://右中
+                centerX = width / 2 + getRadiusAndPadding();
+                centerY = height / 2;
                 break;
-            case PathMenu.RIGHT_BOTTOM://右下
-                centerX = getWidth() / 2 + getRadiusAndPadding();
-                centerY = getHeight() / 2 + getRadiusAndPadding();
+            case RIGHT_BOTTOM://右下
+                centerX = width / 2 + getRadiusAndPadding();
+                centerY = height / 2 + getRadiusAndPadding();
                 break;
 
-            case PathMenu.CENTER:
-                centerX = getWidth() / 2;
-                centerY = getHeight() / 2;
+            case CENTER:
+                centerX = width / 2;
+                centerY = height / 2;
                 break;
         }
     }
@@ -85,21 +98,9 @@ public class PathMenuLayout extends ViewGroup {
 
     public PathMenuLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // 获取自定义属性，设定默认值
-        if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs,
-                    jp.co.recruit_lifestyle.android.floatingview.R.styleable.ArcLayout, 0, 0);
-            mFromDegrees = a.getFloat(jp.co.recruit_lifestyle.android.floatingview.R.styleable.ArcLayout_fromDegrees,
-                    DEFAULT_FROM_DEGREES);
-            mToDegrees = a.getFloat(jp.co.recruit_lifestyle.android.floatingview.R.styleable.ArcLayout_toDegrees,
-                    DEFAULT_TO_DEGREES);
-            mChildSize = Math
-                    .max(a.getDimensionPixelSize(
-                            jp.co.recruit_lifestyle.android.floatingview.R.styleable.ArcLayout_childSize, 0), 0);
-
-            a.recycle();
-        }
+        setChildSize((int) (44 * Resources.getSystem().getDisplayMetrics().density));
     }
+
 
     /**
      * 计算半径
@@ -154,18 +155,8 @@ public class PathMenuLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
-        int radius = mRadius = computeRadius(
-                Math.abs(mToDegrees - mFromDegrees), getChildCount(),
-                mChildSize, mChildPadding, MIN_RADIUS);
-        Log.i("layout", "radius:" + radius);
-
-        int layoutPadding = 10;
-        int size = radius * 2 + mChildSize + mChildPadding
-                + layoutPadding * 2;
-        Log.i("layout", "size:" + size);
-
+        int size = getSize();
         setMeasuredDimension(size, size);
-
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             getChildAt(i)
@@ -175,6 +166,16 @@ public class PathMenuLayout extends ViewGroup {
                             MeasureSpec.makeMeasureSpec(mChildSize,
                                     MeasureSpec.EXACTLY));
         }
+    }
+
+    public int getSize() {
+        int radius = mRadius = computeRadius(
+                Math.abs(mToDegrees - mFromDegrees), getChildCount(),
+                mChildSize, mChildPadding, MIN_RADIUS);
+        int layoutPadding = mChildPadding * 2;
+        int size = radius * 2 + mChildSize + mChildPadding
+                + layoutPadding * 2;
+        return size;
     }
 
     /**
@@ -237,9 +238,9 @@ public class PathMenuLayout extends ViewGroup {
      */
     private static Animation createExpandAnimation(float fromXDelta,
                                                    float toXDelta, float fromYDelta, float toYDelta, long startOffset,
-                                                   long duration, Interpolator interpolator) {
+                                                   long duration, Interpolator interpolator, boolean rotateAnime) {
         Animation animation = new RotateAndTranslateAnimation(0, toXDelta, 0,
-                toYDelta, 0, 720);
+                toYDelta, 0, rotateAnime ? 360 : 0);
         animation.setStartOffset(startOffset);
         animation.setDuration(duration);
         animation.setInterpolator(interpolator);
@@ -253,7 +254,7 @@ public class PathMenuLayout extends ViewGroup {
      */
     private static Animation createShrinkAnimation(float fromXDelta,
                                                    float toXDelta, float fromYDelta, float toYDelta, long startOffset,
-                                                   long duration, Interpolator interpolator) {
+                                                   long duration, Interpolator interpolator, boolean rotateAnime) {
         AnimationSet animationSet = new AnimationSet(false);
         animationSet.setFillAfter(true);
         //收缩过程中，child 逆时针自旋转360度
@@ -266,10 +267,10 @@ public class PathMenuLayout extends ViewGroup {
         rotateAnimation.setInterpolator(new LinearInterpolator());
         rotateAnimation.setFillAfter(true);
 
-        animationSet.addAnimation(rotateAnimation);
+//        animationSet.addAnimation(rotateAnimation);
         //Displacement during contraction and rotate 360 ​​degrees counterclockwise
         Animation translateAnimation = new RotateAndTranslateAnimation(0,
-                toXDelta, 0, toYDelta, 360, 720);
+                toXDelta, 0, toYDelta, 0, rotateAnime ? 360 : 0);
         translateAnimation.setStartOffset(startOffset + preDuration);
         translateAnimation.setDuration(duration - preDuration);
         translateAnimation.setInterpolator(interpolator);
@@ -300,16 +301,26 @@ public class PathMenuLayout extends ViewGroup {
         final int toXDelta = frame.left - child.getLeft();//Expand or shrink the animation, child displacement distance along the X axis
         final int toYDelta = frame.top - child.getTop();//Expand or shrink the animation, child displacement distance along the Y axis
 
-        Interpolator interpolator = mExpanded ? new AccelerateInterpolator()
-                : new OvershootInterpolator(1.5f);
+        Interpolator interpolator = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+//            interpolator = mExpanded ? new AccelerateInterpolator()
+//                    : new OvershootInterpolator(1.5f);
+//        }
+        if(mExpanded) {
+            interpolator = new AccelerateInterpolator();
+        } else {
+            interpolator = new OvershootInterpolator(1.5f);
+        }
+
+
         final long startOffset = computeStartOffset(childCount, mExpanded,
                 index, 0.1f, duration, interpolator);
 
         //mExpanded is true, expanded, shrinking animation; false, expanding animation
         Animation animation = mExpanded ? createShrinkAnimation(0, toXDelta, 0,
-                toYDelta, startOffset, duration, interpolator)
+                toYDelta, startOffset, duration, interpolator, rotateAnime)
                 : createExpandAnimation(0, toXDelta, 0, toYDelta, startOffset,
-                duration, interpolator);
+                duration, interpolator, rotateAnime);
 
         final boolean isLast = getTransformedIndex(expanded, childCount, index) == childCount - 1;
         animation.setAnimationListener(new AnimationListener() {
@@ -357,7 +368,8 @@ public class PathMenuLayout extends ViewGroup {
 
         mFromDegrees = fromDegrees;
         mToDegrees = toDegrees;
-        computeCenterXY(position);
+        int size = getSize();
+        computeCenterXY(position, size, size);
         requestLayout();
     }
 
@@ -371,7 +383,8 @@ public class PathMenuLayout extends ViewGroup {
 
         mFromDegrees = fromDegrees;
         mToDegrees = toDegrees;
-        computeCenterXY(position);
+        int size = getSize();
+        computeCenterXY(position, size, size);
         requestLayout();
     }
 
@@ -386,12 +399,17 @@ public class PathMenuLayout extends ViewGroup {
         mChildSize = size;
 
         requestLayout();
+
     }
 
     public int getChildSize() {
         return mChildSize;
     }
 
+    public PathMenuLayout setChildPadding(int size){
+        mChildPadding =  size;
+        return this;
+    }
 
     /**
      * 切换中心按钮的展开缩小
@@ -446,5 +464,20 @@ public class PathMenuLayout extends ViewGroup {
         }
 
         requestLayout();
+        if(listenAnimationEnd!=null){
+            listenAnimationEnd.onAnimationEnd();
+        }
+
+    }
+
+    public void setRotateAnime(boolean rotateAnime) {
+        this.rotateAnime = rotateAnime;
+    }
+
+    public interface ListenAnimationEnd{
+        void onAnimationEnd();
+    }
+    public void setOnListenAnimationEnd(ListenAnimationEnd listenAnimationEnd){
+        this.listenAnimationEnd = listenAnimationEnd;
     }
 }

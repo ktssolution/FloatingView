@@ -37,7 +37,7 @@ public interface FloatingViewListener {
      * @param y           y coordinate
      */
     void onTouchFinished(boolean isFinishing, int x, int y);
-
+    void onFinished(FloatingView floatingView, int x, int y);
     void onClick();
     void onLongClick();
     void onDoubleClick();

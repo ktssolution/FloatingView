@@ -27,9 +27,6 @@ import jp.co.recruit.floatingview.R;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingView;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewManager;
-import jp.co.recruit_lifestyle.android.floatingview.animation.enumerators.AnimationType;
-import jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.FloatingMenuButton;
-import jp.co.recruit_lifestyle.android.floatingview.floatingmenubutton.MovementStyle;
 import jp.co.recruit_lifestyle.sample.DeleteActionActivity;
 
 /**
@@ -155,6 +152,10 @@ public class CustomFloatingViewService extends Service implements FloatingViewLi
             editor.putInt(PREF_KEY_LAST_POSITION_Y, y);
             editor.apply();
         }
+    }
+
+    @Override
+    public void onFinished(FloatingView floatingView, int x, int y) {
     }
 
     @Override
