@@ -191,7 +191,7 @@ public class PathMenuLayout extends ViewGroup {
 
         final int childCount = getChildCount();
 //        final float perDegrees =Math.abs (mToDegrees - mFromDegrees) / (childCount - 1);
-        final float perDegrees = Math.abs(mToDegrees - mFromDegrees) == 360 ? (Math.abs(mToDegrees - mFromDegrees)) / (childCount) : (Math.abs(mToDegrees - mFromDegrees)) / (childCount - 1);
+        final float perDegrees = Math.abs(mToDegrees - mFromDegrees) == 360 ? (mToDegrees - mFromDegrees) / (childCount) : (mToDegrees - mFromDegrees) / (childCount - 1);
 
 
         float degrees = mFromDegrees;

@@ -99,11 +99,17 @@ public class PathMenuCustom  {
             }
         });
         ImageView item = new ImageView(context);
-        item.setImageResource(R.drawable.ic_email);
+        item.setImageResource(R.drawable.ic_sample);
         item.setBackgroundResource(R.drawable.circle_fab_red);
         item.setPadding(24, 24, 24, 24);
 
         mPathMenuLayout.addView(item);
+        ImageView item2 = new ImageView(context);
+        item2.setImageResource(R.drawable.ic_sample);
+        item2.setBackgroundResource(R.drawable.circle_fab_red);
+        item2.setPadding(24, 24, 24, 24);
+
+        mPathMenuLayout.addView(item2);
         ImageView item1 = new ImageView(context);
         item1.setBackgroundResource(R.drawable.circle_fab_red);
         item1.setPadding(24, 24, 24, 24);
@@ -177,7 +183,7 @@ public class PathMenuCustom  {
                 mPathMenuLayout.setArc(90, 180, position);
                 break;
             case PathMenuLayout.RIGHT_CENTER://右中
-                mPathMenuLayout.setArc(90, 270, position);
+                mPathMenuLayout.setArc(270, 90, position);
                 break;
             case PathMenuLayout.RIGHT_BOTTOM://右下
                 mPathMenuLayout.setArc(180, 270, position);
