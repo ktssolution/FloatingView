@@ -549,7 +549,9 @@ public class FloatingViewManager implements ScreenChangedListener, View.OnTouchL
         // 必ずトップに来て欲しいので毎回貼り付け
         // Viewの貼り付け
         mWindowManager.addView(floatingView, floatingView.getWindowLayoutParams());
-
+        if(mFloatingViewListener!=null){
+            mFloatingViewListener.onStarted(floatingView, floatingView.getWindowLayoutParams().x, floatingView.getWindowLayoutParams().y);
+        }
         if(options.removeTrashView){
             setTrashViewEnabled(false);
         } else{
