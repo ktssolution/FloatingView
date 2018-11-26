@@ -159,11 +159,6 @@ public class CustomFloatingViewService extends Service implements FloatingViewLi
     }
 
     @Override
-    public void onStarted(FloatingView floatingView, int x, int y) {
-        
-    }
-
-    @Override
     public void onClick() {
         Log.d(TAG, "onClick");
 

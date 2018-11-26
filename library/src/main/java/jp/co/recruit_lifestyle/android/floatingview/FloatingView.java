@@ -938,9 +938,9 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
                 mParams.x = goalPositionX;
                 mParams.y = goalPositionY;
                 updateViewLayout();
-                if(finishListener!=null){
-                    finishListener.finished();
-                }
+            }
+            if(finishListener!=null){
+                finishListener.finished();
             }
         }
         // タッチ座標を初期化

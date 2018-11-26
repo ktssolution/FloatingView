@@ -38,7 +38,6 @@ public interface FloatingViewListener {
      */
     void onTouchFinished(boolean isFinishing, int x, int y);
     void onFinished(FloatingView floatingView, int x, int y);
-    void onStarted(FloatingView floatingView, int x, int y);
     void onClick();
     void onLongClick();
     void onDoubleClick();
