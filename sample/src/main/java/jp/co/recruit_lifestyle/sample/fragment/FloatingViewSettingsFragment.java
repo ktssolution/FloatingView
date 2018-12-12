@@ -2,7 +2,7 @@ package jp.co.recruit_lifestyle.sample.fragment;
 
 
 import android.os.Bundle;
-import android.support.v14.preference.PreferenceFragment;
+import android.preference.PreferenceFragment;
 
 import jp.co.recruit.floatingview.R;
 
@@ -28,11 +28,9 @@ public class FloatingViewSettingsFragment extends PreferenceFragment {
         // Required empty public constructor
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.settings_floatingview, null);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.settings_floatingview);
     }
 }

@@ -876,7 +876,7 @@ public class FloatingView extends FrameLayout implements ViewTreeObserver.OnPreD
         return mMetrics.widthPixels - mNavigationBarHorizontalOffset;
     }
     public int getViewParentHeight() {
-        return mMetrics.heightPixels - mStatusBarHeight - mNavigationBarHorizontalOffset;
+        return mMetrics.heightPixels - mStatusBarHeight + mNavigationBarVerticalOffset;
     }
     /**
      * 左右の端に移動します。
