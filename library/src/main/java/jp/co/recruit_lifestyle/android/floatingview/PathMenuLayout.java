@@ -28,7 +28,12 @@ public class PathMenuLayout extends ViewGroup {
     public static final float DEFAULT_TO_DEGREES = 360.0f;
     private float mFromDegrees = DEFAULT_FROM_DEGREES;
     private float mToDegrees = DEFAULT_TO_DEGREES;
-    public static final int MIN_RADIUS = 200;
+
+    public void setMinRadius(int MIN_RADIUS) {
+        this.MIN_RADIUS = MIN_RADIUS;
+    }
+
+    public int MIN_RADIUS = 200;
     private int mRadius;// 中心菜单圆点到子菜单中心的距离
     private boolean mExpanded = false;
     private boolean rotateAnime = false;

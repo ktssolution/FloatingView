@@ -88,6 +88,7 @@ public class PathMenuCustom  {
 
 
         mPathMenuLayout = (PathMenuLayout) frameLayout.findViewById(R.id.item_layout);
+        mPathMenuLayout.setMinRadius((int) (60 * Resources.getSystem().getDisplayMetrics().density));
         mPathMenuLayout.setChildSize((int) (40 * Resources.getSystem().getDisplayMetrics().density));
         mPathMenuLayout.setRotateAnime(true);
         mPathMenuLayout.setOnListenAnimationEnd(new PathMenuLayout.ListenAnimationEnd() {
@@ -141,7 +142,7 @@ public class PathMenuCustom  {
     }
 
     public void setPositionInWindow(int centerX, int centerY, int widthParent, int heightParent, int width, int height){
-        int threadHold =  PathMenuLayout.MIN_RADIUS;
+        int threadHold =  mPathMenuLayout.MIN_RADIUS;
         if(centerX < threadHold){
             if(centerY < threadHold) {
                 position = PathMenuLayout.LEFT_TOP;
